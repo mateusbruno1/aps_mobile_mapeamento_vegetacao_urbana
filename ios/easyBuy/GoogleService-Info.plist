@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>946188799189-e97g8g8b0hjp061r9eeuplorrjf64865.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.946188799189-e97g8g8b0hjp061r9eeuplorrjf64865</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCFFat_TQlJqDmHGhj9pRmFFU7cp6nUJMc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>946188799189</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.reactjs.native.example.easyBuy</string>
+	<key>PROJECT_ID</key>
+	<string>easybuy-ec5bb</string>
+	<key>STORAGE_BUCKET</key>
+	<string>easybuy-ec5bb.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:946188799189:ios:4a00d0a79c49bdf7fb665c</string>
+</dict>
+</plist>
