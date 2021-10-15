@@ -1,4 +1,4 @@
-import {useCallback, useMemo, useReducer} from 'react';
+import {useCallback, useContext} from 'react';
 
 // STORE
 import {getData, storeData} from '../utils/AsyncStorage';
@@ -6,7 +6,12 @@ import {getData, storeData} from '../utils/AsyncStorage';
 // HOOKS
 import useRestRequest from './useRestRequest';
 
+// CONTEXT
+import {AuthContext} from '../services/context';
+
 export  function useAuthentication() {
+  // CONTEXT
+  const {signIn} = useContext(AuthContext);
   // HOOKS
   const {loading: newSessionLoading, post: requestNewSession} =
     useRestRequest();
@@ -19,7 +24,7 @@ export  function useAuthentication() {
     
       storeData('token',newSession.token);
       storeData('user',newSession.user);
-      
+      signIn();
     },
     [requestNewSession],
   );

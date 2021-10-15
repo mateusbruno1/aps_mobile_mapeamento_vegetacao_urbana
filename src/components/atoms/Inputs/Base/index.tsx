@@ -10,15 +10,19 @@ interface Props {
   placeholder: string;
   onChange: (text: string) => void;
   isPassword?: boolean;
+  isNumeric?: boolean;
+  maxLength?: number;
 }
 
-const Input: React.FC<Props> = ({value, placeholder, onChange, isPassword}) => {
+const Input: React.FC<Props> = ({value, placeholder, onChange, isPassword, isNumeric, maxLength = 120}) => {
   return (
     <S.Container>
       <S.Input
+        maxLength={maxLength}
+        keyboardType={isNumeric ? 'numeric' : 'default'}
         value={value}
         onChangeText={onChange}
-        placeholderTextColor={Colors.GRAY_100}
+        placeholderTextColor={Colors.GRAY_200}
         placeholder={placeholder}
         secureTextEntry={isPassword}
       />

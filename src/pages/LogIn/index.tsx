@@ -1,28 +1,27 @@
 import React, {useContext, useState} from 'react';
-import {View, Text, Button} from 'react-native';
+import {View, Text} from 'react-native';
 
 // INTERFACES
 import {Navigation} from '../../interfaces/Navigation';
 
 // STYLES
-// import { Container } from './styles';
-
-// CONTEXT
-import {AuthContext} from '../../services/context';
+import * as S from './styles';
 
 // HOOKS
 import {useAuthentication} from '../../hooks/useAuthentication';
+import { Notification, useNotification } from '../../hooks/useNotification';
 
 // COMPONENTS
 import Input from '../../components/atoms/Inputs/Base';
+import Button from '../../components/atoms/Button';
 
 interface Props {
   navigation: Navigation;
 }
 
-const LogIn: React.FC = () => {
-  // CONTEXT
-  const {signIn} = useContext(AuthContext);
+const LogIn: React.FC<Props> = ({
+  navigation
+}) => {
 
   // STATES
   const [email, setEmail] = useState<string>('');
@@ -30,6 +29,7 @@ const LogIn: React.FC = () => {
 
   // HOOKS
   const {newSession, newSessionLoading} = useAuthentication();
+  const notification: Notification = useNotification();
 
   const onChangeEmail = (text:string) => {
     setEmail(text);
@@ -40,12 +40,16 @@ const LogIn: React.FC = () => {
   };
 
   const onSubmit = async () => {
-    const session = await newSession(email, password);
+    try {
+      await newSession(email, password);
+    } catch (error) {
+      // err
+      notification.error('Ops, algo deu errado')
+    }
   };
 
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Login Screen</Text>
+    <S.Container>
       <Input
         value={email}
         placeholder="Digite o e-mail"
@@ -57,8 +61,13 @@ const LogIn: React.FC = () => {
         isPassword
         onChange={onChangePassword}
       />
-      <Button title={newSessionLoading ? "Carregando...":"LogIn"} onPress={onSubmit} />
-    </View>
+      <Button onPress={onSubmit} loading={newSessionLoading}>
+        Entrar
+      </Button>
+      <Button onPress={() => navigation.navigate('SignUp')}>
+        Cadastre-se
+      </Button>
+    </S.Container>
   );
 };
 
