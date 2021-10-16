@@ -22,6 +22,8 @@ import * as Colors from '../styles/colors';
 import AppLoading from '../pages/AppLoading';
 
 import HomeScreen from '../pages/Home';
+import TreeInfoScreen from '../pages/TreeInfo';
+import TreeCadasterScreen from '../pages/TreeCadaster';
 import AccountScreen from '../pages/Account';
 import CartScreen from '../pages/Cart';
 import DrawerScreen from '../pages/Drawer';
@@ -41,9 +43,6 @@ const Routes = () => {
     return {
       signIn: async () => {
         const token = await getData('token');
-        // if (token) {
-        //   api.defaults.headers.Authorization = `Bearer ${token.token}`;
-        // }
         setIsSignOut(false);
         setIsLoading(false);
         setUserToken(token);
@@ -130,13 +129,24 @@ const Routes = () => {
     );
   };
 
+  const App = () => (
+    <Stack.Navigator screenOptions={{
+      headerShown: false,
+    }}>
+      <Stack.Screen name="Home" component={HomeScreen}/>
+      <Stack.Screen name="TreeInfo" component={TreeInfoScreen}/>
+      <Stack.Screen name="TreeCadaster" component={TreeCadasterScreen}/>
+      <Stack.Screen name="Drawer" component={DrawerScreen}/>
+    </Stack.Navigator>
+  )
+
   const Root = () => (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}>
       {userToken ? (
-        <Stack.Screen name="App" component={TabNav} />
+        <Stack.Screen name="App" component={App} />
       ) : (
         <Stack.Screen
           name="Auth"
