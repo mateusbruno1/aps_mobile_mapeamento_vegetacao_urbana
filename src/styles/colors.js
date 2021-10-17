@@ -11,3 +11,6 @@ export const GRAY_200 = '#afb2b1';
 export const GRAY_500 = '#8b8c89';
 export const GRAY_600 = '#808080';
 export const GRAY_800 = '#494d4b';
+
+export const GREEN_100 = '#29ab87'
+export const GREEN_200 = '#3f704d'

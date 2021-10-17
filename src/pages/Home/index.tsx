@@ -13,6 +13,8 @@ import {Button, TextButton, styles} from './styles';
 import {Appbar, Searchbar, List} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
 
+import {GREEN_100, GRAY_100} from '../../styles/colors';
+
 // HOOKS
 import {useTrees} from '../../hooks/useTrees';
 
@@ -25,198 +27,11 @@ interface Props {
   navigation: Navigation;
 }
 
-const MapStyle = [
-  {
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#212121',
-      },
-    ],
-  },
-  {
-    elementType: 'labels.icon',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#757575',
-      },
-    ],
-  },
-  {
-    elementType: 'labels.text.stroke',
-    stylers: [
-      {
-        color: '#212121',
-      },
-    ],
-  },
-  {
-    featureType: 'administrative',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#757575',
-      },
-    ],
-  },
-  {
-    featureType: 'administrative.country',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#9e9e9e',
-      },
-    ],
-  },
-  {
-    featureType: 'administrative.land_parcel',
-    stylers: [
-      {
-        visibility: 'off',
-      },
-    ],
-  },
-  {
-    featureType: 'administrative.locality',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#bdbdbd',
-      },
-    ],
-  },
-  {
-    featureType: 'poi',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#757575',
-      },
-    ],
-  },
-  {
-    featureType: 'poi.park',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#181818',
-      },
-    ],
-  },
-  {
-    featureType: 'poi.park',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#616161',
-      },
-    ],
-  },
-  {
-    featureType: 'poi.park',
-    elementType: 'labels.text.stroke',
-    stylers: [
-      {
-        color: '#1b1b1b',
-      },
-    ],
-  },
-  {
-    featureType: 'road',
-    elementType: 'geometry.fill',
-    stylers: [
-      {
-        color: '#2c2c2c',
-      },
-    ],
-  },
-  {
-    featureType: 'road',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#8a8a8a',
-      },
-    ],
-  },
-  {
-    featureType: 'road.arterial',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#373737',
-      },
-    ],
-  },
-  {
-    featureType: 'road.highway',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#3c3c3c',
-      },
-    ],
-  },
-  {
-    featureType: 'road.highway.controlled_access',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#4e4e4e',
-      },
-    ],
-  },
-  {
-    featureType: 'road.local',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#616161',
-      },
-    ],
-  },
-  {
-    featureType: 'transit',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#757575',
-      },
-    ],
-  },
-  {
-    featureType: 'water',
-    elementType: 'geometry',
-    stylers: [
-      {
-        color: '#000000',
-      },
-    ],
-  },
-  {
-    featureType: 'water',
-    elementType: 'labels.text.fill',
-    stylers: [
-      {
-        color: '#3d3d3d',
-      },
-    ],
-  },
-];
-
 const Home: React.FC<Props> = ({navigation}) => {
   // STATES
   const [coordinates, setCoordinates] = useState({
-    latitude: -21.1419838,
-    longitude: -51.1045257
+    latitude: -21.2092857,
+    longitude: -50.4010365
   });
   const [query, setQuery] = useState('');
   const [trees, setTrees] = useState([]);
@@ -238,15 +53,26 @@ const Home: React.FC<Props> = ({navigation}) => {
 
   const searchFilterFunction = async (text: string) => {
     setQuery(text);
-    const newData = arrayholder.filter((item) => {
-      const itemData = `${item?.name.toUpperCase()}   
+    let newData = trees.filter((item) => {
+      const itemData = `${item?.name.toUpperCase()}
       ${item?.name.toUpperCase()}`;
 
       const textData = text.toUpperCase();
       return itemData.indexOf(textData) > -1;
     });
-    setTrees(newData);
-    if (!(newData.length < 1)) {
+    if (newData.length === 0) {
+      newData = trees.filter((item) => {
+        const itemData = `${item?.description.toUpperCase()}
+        ${item?.description.toUpperCase()}`;
+  
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+    }
+    setArrayholder(newData);
+    if (newData.length > 0) {
+      console.log('newData: ', newData);
+      
       setCoordinates({longitude: parseFloat(newData[0]?.longitude), latitude: parseFloat(newData[0]?.latitude)});
     } else {
       getLocation();
@@ -254,31 +80,40 @@ const Home: React.FC<Props> = ({navigation}) => {
   };
 
   // HOOKS
-  const {getRequestTrees, requestTrees, requestTreesLoading} = useTrees();
+  const {getRequestTrees, requestTreesLoading} = useTrees();
+
+  const getTrees = async () => {
+    try {
+      const requestData = await getRequestTrees();
+      setTrees(requestData);
+    } catch (error) {
+      // err
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
-    getRequestTrees();
-    setTrees(requestTrees);
-  }, [getRequestTrees])
+    getTrees();
+  }, [])
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: 'transparent'}}>
         {!requestTreesLoading ? (
           <>
-            {query !== '' && trees.length !== 0 ? (
+            {query !== '' && arrayholder.length !== 0 ? (
               <FlatList
                 style={{
                   width: width,
-                  backgroundColor: '#505050',
+                  backgroundColor: GREEN_100,
                   elevation: 2,
                   maxHeight: width * (1 / 2.5),
                   position: 'absolute',
                   zIndex: 100,
                 }}
-                data={trees}
+                data={arrayholder}
                 renderItem={({item}) => (
                   <List.Item
                     onPress={() => handleCellNavigation(item.id)}
-                    title={`Célula ${item.name}`}
+                    title={`${item.name}`}
                     description={item.description}
                     titleNumberOfLines={1}
                     titleStyle={{
@@ -293,7 +128,7 @@ const Home: React.FC<Props> = ({navigation}) => {
                     right={(props) => (
                       <Icon
                         {...props}
-                        color="#979dac"
+                        color={GRAY_100}
                         size={24}
                         style={{
                           alignSelf: 'center',
@@ -312,13 +147,12 @@ const Home: React.FC<Props> = ({navigation}) => {
               region={{
                 latitude: coordinates.latitude,
                 longitude: coordinates.longitude,
-                latitudeDelta: 0.0143,
-                longitudeDelta: 0.0134,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1,
               }}
               showsUserLocation
-              loadingEnabled
-              customMapStyle={MapStyle}>
-              {trees.map((tree) => {
+              loadingEnabled>
+              {trees && !requestTreesLoading && trees.map((tree) => {
                 const latitude = parseFloat(tree?.latitude);
                 const longitude = parseFloat(tree?.longitude);
                 return (
@@ -347,24 +181,24 @@ const Home: React.FC<Props> = ({navigation}) => {
             <View style={styles.viewSearch}>
               <Searchbar
                 placeholder="Buscar"
-                placeholderTextColor="#979dac"
+                placeholderTextColor={GRAY_100}
                 onChangeText={(text) => searchFilterFunction(text)}
                 autoCorrect={false}
                 value={query}
                 style={{
                   margin: 8,
                   elevation: 2,
-                  backgroundColor: '#505050',
+                  backgroundColor: GREEN_100,
                 }}
                 inputStyle={{
                   fontFamily: 'Inter',
                   color: '#fff',
                 }}
                 icon={() => {
-                  return <Icon name="search" size={24} color="#979dac" />;
+                  return <Icon name="search" size={24} color={GRAY_100} />;
                 }}
                 clearIcon={() => {
-                  return <Icon name="x" size={24} color="#979dac" />;
+                  return <Icon name="x" size={24} color={GRAY_100} />;
                 }}
               />
             </View>

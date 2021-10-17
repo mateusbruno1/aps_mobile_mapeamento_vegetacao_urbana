@@ -5,15 +5,15 @@ import useRestRequest from './useRestRequest';
 
 export  function useTrees() {
   // HOOKS
-  const {loading: requestTreesLoading, get: getRequestTrees, data: requestTrees} =
+  const {loading: requestTreesLoading, get: requestGetTrees, data: requestTrees} =
     useRestRequest();
 
-  const newSession = useCallback(
+  const getRequestTrees = useCallback(
      async () => {
       
-      return await getRequestTrees('/Tree');
+      return await requestGetTrees('/Tree');
     },
-    [getRequestTrees],
+    [requestGetTrees],
   );
 
   return {

@@ -61,7 +61,7 @@ const LogIn: React.FC<Props> = ({
         isPassword
         onChange={onChangePassword}
       />
-      <Button onPress={onSubmit} loading={newSessionLoading}>
+      <Button onPress={onSubmit} disabled={!email.length || !password.length} loading={newSessionLoading}>
         Entrar
       </Button>
       <Button onPress={() => navigation.navigate('SignUp')}>

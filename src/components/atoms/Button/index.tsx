@@ -6,15 +6,17 @@ import * as S from './styles';
 interface Props {
   loading?: boolean;
   onPress: () => void;
+  disabled?: boolean;
 }
 
 const Button: React.FC<Props> = ({
   loading,
   children,
-  onPress
+  onPress,
+  disabled
 }) => {
-  return <S.Container onPress={onPress}>
-    {loading ? <ActivityIndicator color="#fff" /> : <S.Title>{children}</S.Title>}
+  return <S.Container disabled={disabled} onPress={() => disabled ? {} : onPress()}>
+    {loading ? <ActivityIndicator color="#fff" /> : <S.Title disabled={disabled}>{children}</S.Title>}
     
   </S.Container>;
 }

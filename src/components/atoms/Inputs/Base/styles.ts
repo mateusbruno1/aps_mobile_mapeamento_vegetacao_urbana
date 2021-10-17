@@ -9,7 +9,7 @@ import * as Typography from '../../../../styles/typography';
 import * as Colors from '../../../../styles/colors';
 
 export const Container = styled.View`
-  height: 52;
+  height: 45;
   width: 100%;
   background-color: ${Colors.WHITE};
   border-radius: 8;
@@ -17,8 +17,6 @@ export const Container = styled.View`
   border: 1px solid ${Colors.GRAY_500};
 
   padding-left: ${wp('1')};
-  padding-bottom: ${wp('1')};
-  padding-top: ${wp('1')};
   padding-right: ${wp('1')};
 
   margin-top: ${wp('2')};

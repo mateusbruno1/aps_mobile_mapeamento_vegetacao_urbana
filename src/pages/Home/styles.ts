@@ -1,6 +1,9 @@
 import {Dimensions} from 'react-native';
 import styled from 'styled-components/native';
 const {width, height} = Dimensions.get('window');
+
+import {GREEN_200} from '../../styles/colors';
+
 export const Container = styled.View`
   flex: 1;
   justify-content: center;
@@ -16,21 +19,20 @@ export const Image = styled.ImageBackground`
 `;
 
 export const Button = styled.TouchableOpacity`
-  width: 168px;
-  elevation: 2;
+  max-width: 168px;
   height: 48px;
-  background-color: #5c677d;
+  background-color: ${GREEN_200};
   align-self: stretch;
   padding: 0 20px;
   justify-content: center;
   align-items: center;
-  border-radius: 8px;
+  border-radius: 4px;
 `;
 
 export const TextButton = styled.Text`
   color: #fff;
   font-size: 12px;
-  font-family: 'Montserrat-Bold';
+  font-family: 'Inter';
 `;
 export const styles = {
   container: {
