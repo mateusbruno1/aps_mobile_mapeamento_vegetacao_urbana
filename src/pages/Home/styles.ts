@@ -2,7 +2,7 @@ import {Dimensions} from 'react-native';
 import styled from 'styled-components/native';
 const {width, height} = Dimensions.get('window');
 
-import {GREEN_200} from '../../styles/colors';
+import {PEWTER_BLUE, CAMBRIDGE_BLUE} from '../../styles/colors';
 
 export const Container = styled.View`
   flex: 1;
@@ -21,7 +21,7 @@ export const Image = styled.ImageBackground`
 export const Button = styled.TouchableOpacity`
   max-width: 168px;
   height: 48px;
-  background-color: ${GREEN_200};
+  background-color: ${PEWTER_BLUE};
   align-self: stretch;
   padding: 0 20px;
   justify-content: center;
@@ -39,6 +39,20 @@ export const styles = {
     flex: 1,
     position: 'relative',
     backgroundColor: '#1f1f1f',
+  },
+  fabAdd: {
+    backgroundColor: CAMBRIDGE_BLUE,
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 65,
+  },
+  fabInfo: {
+    backgroundColor: CAMBRIDGE_BLUE,
+    position: 'absolute',
+    margin: 16,
+    right: 0,
+    bottom: 115,
   },
   annotationContainer: {
     width: 42,

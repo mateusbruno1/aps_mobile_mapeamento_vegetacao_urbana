@@ -22,7 +22,7 @@ const Input: React.FC<Props> = ({value, placeholder, onChange, isPassword, isNum
         keyboardType={isNumeric ? 'numeric' : 'default'}
         value={value}
         onChangeText={onChange}
-        placeholderTextColor={Colors.GRAY_200}
+        placeholderTextColor={Colors.SLATE_GRAY}
         placeholder={placeholder}
         secureTextEntry={isPassword}
       />

@@ -14,7 +14,7 @@ export const Container = styled.View`
   background-color: ${Colors.WHITE};
   border-radius: 8;
 
-  border: 1px solid ${Colors.GRAY_500};
+  border: 1px solid ${Colors.PEWTER_BLUE};
 
   padding-left: ${wp('1')};
   padding-right: ${wp('1')};

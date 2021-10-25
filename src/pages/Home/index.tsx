@@ -12,8 +12,9 @@ import Geolocation from 'react-native-geolocation-service';
 import {Button, TextButton, styles} from './styles';
 import {Appbar, Searchbar, List} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Feather';
+import { FAB } from 'react-native-paper';
 
-import {GREEN_100, GRAY_100} from '../../styles/colors';
+import {GRANNY_SMITH_APPLE, SLATE_GRAY} from '../../styles/colors';
 
 // HOOKS
 import {useTrees} from '../../hooks/useTrees';
@@ -23,11 +24,16 @@ import {useTrees} from '../../hooks/useTrees';
 // INTERFACES
 import {Navigation} from '../../interfaces/Navigation';
 
+interface RouteProps {
+  params: any
+}
+
 interface Props {
+  route: RouteProps;
   navigation: Navigation;
 }
 
-const Home: React.FC<Props> = ({navigation}) => {
+const Home: React.FC<Props> = ({navigation, route}) => {
   // STATES
   const [coordinates, setCoordinates] = useState({
     latitude: -21.2092857,
@@ -103,7 +109,7 @@ const Home: React.FC<Props> = ({navigation}) => {
               <FlatList
                 style={{
                   width: width,
-                  backgroundColor: GREEN_100,
+                  backgroundColor: GRANNY_SMITH_APPLE,
                   elevation: 2,
                   maxHeight: width * (1 / 2.5),
                   position: 'absolute',
@@ -117,18 +123,18 @@ const Home: React.FC<Props> = ({navigation}) => {
                     description={item.description}
                     titleNumberOfLines={1}
                     titleStyle={{
-                      color: '#fff',
+                      color: '#000',
                       fontFamily: 'Inter',
                     }}
                     descriptionNumberOfLines={1}
                     descriptionStyle={{
-                      color: '#fff',
+                      color: '#000',
                       fontFamily: 'Inter',
                     }}
                     right={(props) => (
                       <Icon
                         {...props}
-                        color={GRAY_100}
+                        color={SLATE_GRAY}
                         size={24}
                         style={{
                           alignSelf: 'center',
@@ -179,26 +185,40 @@ const Home: React.FC<Props> = ({navigation}) => {
               })}
             </MapView>
             <View style={styles.viewSearch}>
+              <FAB
+                style={styles.fabInfo}
+                small
+                color="white"
+                icon="dots-vertical"
+                onPress={() => navigation.navigate('Drawer')}
+              />
+              <FAB
+                style={styles.fabAdd}
+                small
+                color="white"
+                icon="plus"
+                onPress={() => navigation.navigate('TreeCadaster')}
+              />
               <Searchbar
                 placeholder="Buscar"
-                placeholderTextColor={GRAY_100}
+                placeholderTextColor={SLATE_GRAY}
                 onChangeText={(text) => searchFilterFunction(text)}
                 autoCorrect={false}
                 value={query}
                 style={{
                   margin: 8,
                   elevation: 2,
-                  backgroundColor: GREEN_100,
+                  backgroundColor: GRANNY_SMITH_APPLE,
                 }}
                 inputStyle={{
                   fontFamily: 'Inter',
-                  color: '#fff',
+                  color: '#000',
                 }}
                 icon={() => {
-                  return <Icon name="search" size={24} color={GRAY_100} />;
+                  return <Icon name="search" size={24} color={SLATE_GRAY} />;
                 }}
                 clearIcon={() => {
-                  return <Icon name="x" size={24} color={GRAY_100} />;
+                  return <Icon name="x" size={24} color={SLATE_GRAY} />;
                 }}
               />
             </View>
