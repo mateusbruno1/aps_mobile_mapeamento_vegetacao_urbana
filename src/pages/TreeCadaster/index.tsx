@@ -58,10 +58,13 @@ const TreeCadaster: React.FC<Props> = ({
     type: ''
   })
   const [avatarId, setAvatarId] = useState<number | null>(null);
-
+ 
   // HOOKS
   const {requestUploadImageLoading, postRequestImage, requestCreateTreeLoading, postRequestCreateTree} = useTrees();
 
+  useEffect(() =>{
+    requestLocationPermission()
+  },[])
   const getLocation = async () => {
     let latitude = 0;
     let longitude = 0;
@@ -105,6 +108,7 @@ const TreeCadaster: React.FC<Props> = ({
   const handleSelectMap = async (latitude: number, longitude: number) => {
     await setSelectMapPosition({latitude, longitude});
   };
+
   const handleSelectImage = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -117,25 +121,32 @@ const TreeCadaster: React.FC<Props> = ({
           buttonPositive: 'OK',
         },
       );
+     
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         await launchImageLibrary({}, async (data: any) => {
-          if (data.didCancel) {
+        
+          if (data.assets[0].didCancel) {
+           
             return;
           }
-          if (!data.uri) {
+          
+          if (!data.assets[0].uri) {
+           
             return;
           }
-          const size = data.fileSize / 1024 / 1024;
+
+          const size = data.assets[0].fileSize / 1024 / 1024;
           if (size > 2) {
             Alert.alert('A imagem não pode possuir um tamanho maior que 2Mb');
 
             return;
           }
-
+      
+         
           setImage({
-              fileUri: data.uri,
-              fileName: data.fileName,
-              type: data.type,
+              fileUri: data.assets[0].uri,
+              fileName: data.assets[0].fileName,
+              type: data.assets[0].type,
             });
         });
       }
@@ -151,6 +162,7 @@ const TreeCadaster: React.FC<Props> = ({
       type: image.type,
       uri: image.fileUri,
     });
+   
     try {
       if (
         (image.fileName &&
@@ -165,7 +177,7 @@ const TreeCadaster: React.FC<Props> = ({
       ) {
         file = await postRequestImage(data);
       }
-
+      
       if (file) {
         setAvatarId(file.id);
       } else {
@@ -199,7 +211,8 @@ const TreeCadaster: React.FC<Props> = ({
         );
       }
     } catch (error) {
-      Alert.alert('Erro ao cadastrar nova célula, tente novamente mais tarde');
+    
+      Alert.alert('Erro ao cadastrar nova àrvore, tente novamente mais tarde');
     }
   }
   return (
@@ -377,7 +390,7 @@ const TreeCadaster: React.FC<Props> = ({
                       }}>Remover imagem</Button>
                   </View>
                 )}
-                <Button disabled={!name || !description || latitude === 0 || !latitude || longitude === 0 || !longitude || !avatarId} onPress={onConfirm}>
+                <Button disabled={!name || !description || latitude === 0 || !latitude || longitude === 0 || !longitude || !image.fileUri} onPress={onConfirm}>
                   Cadastrar
                 </Button>
               </ScrollView>
