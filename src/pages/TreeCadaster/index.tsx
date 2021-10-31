@@ -5,6 +5,7 @@ import Geolocation from 'react-native-geolocation-service';
 import Plus from 'react-native-vector-icons/Entypo';
 import {launchImageLibrary} from 'react-native-image-picker';
 import {Headline, Appbar} from 'react-native-paper';
+import api from '../../services/api';
 // import { Container } from './styles';
 import {
   TextButton,
@@ -14,6 +15,7 @@ import {
   styles,
   TextInput,
 } from './styles';
+import * as Colors from '../../styles/colors';
 
 // INTERFACES
 import { Navigation } from '../../interfaces/Navigation';
@@ -43,6 +45,7 @@ const TreeCadaster: React.FC<Props> = ({
     fileUri: string;
     type: string;
   }
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false);
   const [latitude, setLatitude] = useState<number>(0);
   const [longitude, setLongitude] = useState<number>(0);
   const [selectMap, setSelectMap] = useState<boolean>(false);
@@ -60,7 +63,7 @@ const TreeCadaster: React.FC<Props> = ({
   const [avatarId, setAvatarId] = useState<number | null>(null);
  
   // HOOKS
-  const {requestUploadImageLoading, postRequestImage, requestCreateTreeLoading, postRequestCreateTree} = useTrees();
+  const {postRequestCreateTree} = useTrees();
 
   useEffect(() =>{
     requestLocationPermission()
@@ -162,8 +165,12 @@ const TreeCadaster: React.FC<Props> = ({
       type: image.type,
       uri: image.fileUri,
     });
+   console.log('informações da imagem: ', image.fileName, image.fileUri, image.type);
    
     try {
+      setButtonLoading(true);
+      console.log('entrou no try');
+      
       if (
         (image.fileName &&
           image.type &&
@@ -175,13 +182,25 @@ const TreeCadaster: React.FC<Props> = ({
         (selectMapPosition.latitude &&
           selectMapPosition.longitude) !== 0
       ) {
-        file = await postRequestImage(data);
+        console.log('entrou na req da imagem');
+        
+        file = await api
+          .post('/files', data, {
+            headers: {
+              'Content-Type': 'multipart/form-data;',
+            },
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
       
       if (file) {
-        setAvatarId(file.id);
+        setAvatarId(file?.id);
+        console.log('setou o id da imagem');
       } else {
         setAvatarId(null);
+        console.log('não setou o id da imagem');
       }
 
       if (
@@ -191,8 +210,9 @@ const TreeCadaster: React.FC<Props> = ({
       ) {
         let latitude = parseFloat(selectMapPosition.latitude);
         let longitude = parseFloat(selectMapPosition.longitude);
-
+        console.log('entrou na req de criação');
         await postRequestCreateTree(name, description, latitude, longitude, avatarId);
+        setButtonLoading(false);
         navigation.navigate('Home', {
           shouldFetch: true
         });
@@ -209,10 +229,12 @@ const TreeCadaster: React.FC<Props> = ({
           ],
           {cancelable: false},
         );
+        setButtonLoading(false);
       }
     } catch (error) {
-    
-      Alert.alert('Erro ao cadastrar nova àrvore, tente novamente mais tarde');
+      console.log(error);
+      Alert.alert('Erro ao cadastrar, tente novamente mais tarde');
+      setButtonLoading(false);
     }
   }
   return (
@@ -256,7 +278,7 @@ const TreeCadaster: React.FC<Props> = ({
               <Appbar.Header
                 dark
                 style={{
-                  backgroundColor: '#505050',
+                  backgroundColor: Colors.CAMBRIDGE_BLUE,
                   justifyContent: 'space-between',
                 }}>
                 <Appbar.BackAction
@@ -281,21 +303,23 @@ const TreeCadaster: React.FC<Props> = ({
                     paddingLeft: 22,
                     marginTop: 20,
                     marginBottom: 10,
-                    color: '#fff',
+                    color: '#000',
                     fontFamily: 'Inter',
                   }}>
                   Cadastre uma nova árvore
                 </Headline>
 
-                  <Input placeholder="Nome" value={name} onChange={(text) => setName(text)} />
-                  <Input placeholder="Descrição" value={description} onChange={(text) => setDescription(text)} />
+                  <View style={{paddingLeft: 16, paddingRight: 16, paddingBottom: 16}}>
+                    <Input placeholder="Nome" value={name} onChange={(text) => setName(text)} />
+                    <Input placeholder="Descrição" value={description} onChange={(text) => setDescription(text)} />
+                  </View>
 
                 <Headline
                   style={{
                     fontSize: 20,
                     paddingLeft: 22,
                     marginBottom: 10,
-                    color: '#fff',
+                    color: '#000',
                     fontFamily: 'Inter',
                   }}>
                   Selecione o local:
@@ -343,7 +367,10 @@ const TreeCadaster: React.FC<Props> = ({
                       )}
                     </MapView>
 
-                    <Button onPress={() => handleSelectMap(0, 0)}>Alterar localização</Button>
+                    <View style={{paddingLeft: 16, paddingRight: 16}}>
+                      <Button onPress={() => handleSelectMap(0, 0)}>Alterar localização</Button>
+                    </View>
+                    
                   </View>
                 )}
                 {image.fileUri === '' ? (
@@ -353,10 +380,10 @@ const TreeCadaster: React.FC<Props> = ({
                         fontSize: 20,
                         paddingLeft: 22,
                         marginBottom: 10,
-                        color: '#fff',
+                        color: '#000',
                         fontFamily: 'Inter',
                       }}>
-                      Escolha uma Imagem
+                      Escolha uma imagem
                     </Headline>
                     <View style={styles.inputView}>
                       <TouchableOpacity
@@ -375,10 +402,10 @@ const TreeCadaster: React.FC<Props> = ({
                         fontSize: 20,
 
                         marginBottom: 10,
-                        color: '#fff',
+                        color: '#000',
                         fontFamily: 'Inter',
                       }}>
-                      Imagem Selecionada
+                      Imagem selecionada
                     </Headline>
                     <Image
                       style={{flex: 1}}
@@ -390,9 +417,12 @@ const TreeCadaster: React.FC<Props> = ({
                       }}>Remover imagem</Button>
                   </View>
                 )}
-                <Button disabled={!name || !description || latitude === 0 || !latitude || longitude === 0 || !longitude || !image.fileUri} onPress={onConfirm}>
-                  Cadastrar
-                </Button>
+                <View style={{padding: 16}}>
+                    <Button loading={buttonLoading} disabled={!name || !description || latitude === 0 || !latitude || longitude === 0 || !longitude || !image.fileUri} onPress={onConfirm}>
+                    Cadastrar
+                  </Button>
+                </View>
+                
               </ScrollView>
             </SafeAreaView>
           )}

@@ -1,10 +1,11 @@
 import {Dimensions, StyleSheet} from 'react-native';
 import styled from 'styled-components/native';
 const {width, height} = Dimensions.get('window');
+import * as Colors from '../../styles/colors';
 export const Container = styled.View`
   flex: 1;
   justify-content: center;
-  background-color: #1f1f1f;
+  background-color: ${Colors.GRANNY_SMITH_APPLE};
   padding: 20px;
   align-items: center;
 `;
@@ -27,9 +28,9 @@ export const Button = styled.TouchableOpacity`
 `;
 
 export const TextButton = styled.Text`
-  color: #fff;
+  color: #000;
   font-size: 28px;
-  font-family: 'Montserrat-Bold';
+  font-family: 'Inter-Bold';
   font-weight: bold;
 `;
 
@@ -39,11 +40,11 @@ export const GroupButton = styled.View`
   background-color: transparent;
   flex-direction: row;
   align-items: center;
-  color: #777777;
+  color: ${Colors.PEWTER_BLUE};
   margin: 0 20px 20px;
 `;
 export const ButtonGroup = styled.TouchableOpacity`
-  background-color: #faff04;
+  background-color: ${Colors.GRANNY_SMITH_APPLE};
   elevation: 2;
   border-radius: 8px;
   padding: 10px;
@@ -55,14 +56,14 @@ export const ButtonGroup = styled.TouchableOpacity`
 
 export const TextButtonLocale = styled.Text`
   color: #000;
-  font-family: 'Montserrat-Bold';
+  font-family: 'Inter-Bold';
   text-align: center;
   font-size: 12px;
 `;
 export const TextInput = styled.TextInput`
   flex: 1;
-  color: #fff;
-  font-family: 'Montserrat-Regular';
+  color: #000;
+  font-family: 'Inter-Regular';
 `;
 export const BackgroundStyles = {
   flex: 1,
@@ -76,7 +77,7 @@ export const BackgroundStyles = {
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1f1f1f',
+    backgroundColor: Colors.PEWTER_BLUE,
   },
   around: {
     marginBottom: 76,
@@ -92,7 +93,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: width,
-    backgroundColor: '#1f1f1f',
+    backgroundColor: Colors.GRANNY_SMITH_APPLE,
     position: 'absolute',
     left: 0,
     bottom: 0,
@@ -109,7 +110,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     width: '33%',
     height: 52,
-    backgroundColor: '#2e2e2e',
+    backgroundColor: Colors.SLATE_GRAY,
     paddingLeft: 16,
     paddingRight: 16,
     elevation: 2,
@@ -123,7 +124,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 52,
     width: '63%',
-    backgroundColor: '#2e2e2e',
+    backgroundColor: Colors.CELADON_GREEN,
     paddingLeft: 16,
     paddingRight: 16,
     elevation: 2,
@@ -137,7 +138,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     width: width - 40,
     height: 52,
-    backgroundColor: '#2e2e2e',
+    backgroundColor: Colors.PEWTER_BLUE,
     paddingLeft: 16,
     paddingRight: 16,
     elevation: 2,
@@ -145,7 +146,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 8,
     alignItems: 'center',
-    color: '#777777',
+    color: Colors.SLATE_GRAY,
   },
   inputImage: {
     alignSelf: 'center',
@@ -158,7 +159,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     width: width - 40,
     height: 52,
-    backgroundColor: '#2e2e2e',
+    backgroundColor: Colors.CAMBRIDGE_BLUE,
     paddingLeft: 16,
     paddingRight: 16,
     elevation: 2,
@@ -166,16 +167,16 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     borderRadius: 8,
     alignItems: 'center',
-    color: '#777777',
+    color: Colors.CAMBRIDGE_BLUE,
   },
   textInput: {
     flex: 1,
     color: '#fff',
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: 'Inter-Regular',
   },
   placeholder: {
     color: '#777777',
-    fontFamily: 'Montserrat-Regular',
+    fontFamily: 'Inter-Regular',
     textAlign: 'left',
     width: '100%',
   },
@@ -226,7 +227,7 @@ export const styles = StyleSheet.create({
     width: width - 40,
   },
   botaoText: {
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: 'Inter-Bold',
     fontSize: 16,
     color: '#000',
   },
@@ -234,7 +235,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
     fontSize: 26,
     color: '#fff',
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: 'Inter-Bold',
     marginBottom: 15,
   },
   button: {
@@ -250,7 +251,7 @@ export const styles = StyleSheet.create({
   buttonMap: {
     width: 450,
     height: 80,
-    fontFamily: 'Montserrat-Bold',
+    fontFamily: 'Inter-Bold',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#7159C1',
