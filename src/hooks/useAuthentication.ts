@@ -1,4 +1,5 @@
 import {useCallback, useContext} from 'react';
+import api from '../services/api';
 
 // STORE
 import {getData, storeData} from '../utils/AsyncStorage';
@@ -21,9 +22,9 @@ export  function useAuthentication() {
       const payload = {email, password};
       
       const newSession = await requestNewSession(payload,'/sessions');
-    
-      storeData('token',newSession.token);
-      storeData('user',newSession.user);
+      
+      await storeData('token',newSession.token);
+      await storeData('user',newSession.user);
       signIn();
     },
     [requestNewSession],

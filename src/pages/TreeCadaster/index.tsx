@@ -8,12 +8,10 @@ import {Headline, Appbar} from 'react-native-paper';
 import api from '../../services/api';
 // import { Container } from './styles';
 import {
-  TextButton,
   GroupButton,
   ButtonGroup,
   TextButtonLocale,
   styles,
-  TextInput,
 } from './styles';
 import * as Colors from '../../styles/colors';
 
@@ -25,7 +23,8 @@ import Input from '../../components/atoms/Inputs/Base';
 import Button from '../../components/atoms/Button';
 
 // HOOKS
-import {useTrees} from '../../hooks/useTrees';
+import { getData } from '../../utils/AsyncStorage';
+import {useNotification, Notification} from '../../hooks/useNotification'
 
 interface Props {
   navigation: Navigation;
@@ -61,9 +60,9 @@ const TreeCadaster: React.FC<Props> = ({
     type: ''
   })
   const [avatarId, setAvatarId] = useState<number | null>(null);
- 
+
   // HOOKS
-  const {postRequestCreateTree} = useTrees();
+  const notification: Notification = useNotification();
 
   useEffect(() =>{
     requestLocationPermission()
@@ -196,7 +195,7 @@ const TreeCadaster: React.FC<Props> = ({
       }
       
       if (file) {
-        setAvatarId(file?.id);
+        setAvatarId(file.id);
         console.log('setou o id da imagem');
       } else {
         setAvatarId(null);
@@ -211,8 +210,19 @@ const TreeCadaster: React.FC<Props> = ({
         let latitude = parseFloat(selectMapPosition.latitude);
         let longitude = parseFloat(selectMapPosition.longitude);
         console.log('entrou na req de criação');
-        await postRequestCreateTree(name, description, latitude, longitude, avatarId);
+        const payload = {
+          name, description, latitude, longitude, avatarId
+        };
+        const bearerToken = await getData('token');
+        await api.post('/Tree', payload, {
+          headers: {
+            Authorization: `Bearer ${bearerToken}`
+          }
+        });
+        // await postRequestCreateTree(name, description, latitude, longitude, avatarId);
         setButtonLoading(false);
+        notification.success('Cadastro efetuado com sucesso')
+        Alert.alert('Cadastro efetuado com sucesso')
         navigation.navigate('Home', {
           shouldFetch: true
         });

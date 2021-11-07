@@ -85,11 +85,13 @@ function useRestRequest(
 
   const [state, dispatch] = useReducer(reducer, initialState);
  
-  const bearerToken = async()=>{await getData('token')};
+  const bearerToken = async() => {
+   return await getData('token');
+  };
 
 
   const defaultOptions = useMemo(
-    () => ({
+    async() => ({
       headers: {
         Authorization: `Bearer ${bearerToken}`,
       },

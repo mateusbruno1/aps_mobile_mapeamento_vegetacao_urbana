@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {Alert} from 'react-native';
 
 // VALIDATORS
 import {MaskCelNumber} from '../../utils/Validators/MaskCelNumber';
@@ -48,13 +49,16 @@ const SignUp: React.FC<Props> = ({
       try {
         await postCreateUser(name, email, phone, password);
         notification.success('Sucesso ao criar usúario');
+        Alert.alert('Sucesso ao criar usúario');
         navigation.navigate('LogIn');
       } catch (error) {
         // err
         notification.error('Ops, o usuário já existe');
+        Alert.alert('Ops, o usuário já existe');
       }
     }
     notification.error('Preencha todos os campos');
+    Alert.alert('Preencha todos os campos');
     return;
   }
   return (

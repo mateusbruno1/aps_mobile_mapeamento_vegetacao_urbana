@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {View, Text} from 'react-native';
+import {View, Text, Alert} from 'react-native';
 
 // INTERFACES
 import {Navigation} from '../../interfaces/Navigation';
@@ -45,6 +45,7 @@ const LogIn: React.FC<Props> = ({
     } catch (error) {
       // err
       notification.error('Ops, algo deu errado')
+      Alert.alert('Ops, algo deu errado')
     }
   };
 

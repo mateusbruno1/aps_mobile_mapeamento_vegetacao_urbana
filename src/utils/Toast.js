@@ -14,10 +14,11 @@ export const showToast = (msg, type, duration = 4000, marginBottom = 60) => {
     Toast.show(msg, {
         position: Toast.position.center,
         containerStyle: {
+            zIndex: 9999,
             marginBottom,
             marginLeft: 20,
             marginRight: 20,
-            borderRadius: 30,
+            borderRadius: 8,
             backgroundColor: mapColor.get(type),
             opacity: 0.6,
         },
