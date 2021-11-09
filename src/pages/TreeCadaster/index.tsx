@@ -163,13 +163,9 @@ const TreeCadaster: React.FC<Props> = ({
       name: image.fileName,
       type: image.type,
       uri: image.fileUri,
-    });
-   console.log('informações da imagem: ', image.fileName, image.fileUri, image.type);
-   
+    });   
     try {
       setButtonLoading(true);
-      console.log('entrou no try');
-      
       if (
         (image.fileName &&
           image.type &&
@@ -181,9 +177,7 @@ const TreeCadaster: React.FC<Props> = ({
         (selectMapPosition.latitude &&
           selectMapPosition.longitude) !== 0
       ) {
-        console.log('entrou na req da imagem');
-        
-        file = await api
+        const response = await api
           .post('/files', data, {
             headers: {
               'Content-Type': 'multipart/form-data;',
@@ -192,16 +186,8 @@ const TreeCadaster: React.FC<Props> = ({
           .catch((err) => {
             console.log(err);
           });
+          file = response.data;
       }
-      
-      if (file) {
-        setAvatarId(file.id);
-        console.log('setou o id da imagem');
-      } else {
-        setAvatarId(null);
-        console.log('não setou o id da imagem');
-      }
-
       if (
         (name && description) !== '' &&
         (selectMapPosition.latitude &&
@@ -209,9 +195,9 @@ const TreeCadaster: React.FC<Props> = ({
       ) {
         let latitude = parseFloat(selectMapPosition.latitude);
         let longitude = parseFloat(selectMapPosition.longitude);
-        console.log('entrou na req de criação');
+        
         const payload = {
-          name, description, latitude, longitude, avatarId
+          name, description, latitude, longitude, avatar_id: file.id
         };
         const bearerToken = await getData('token');
         await api.post('/Tree', payload, {
@@ -219,7 +205,6 @@ const TreeCadaster: React.FC<Props> = ({
             Authorization: `Bearer ${bearerToken}`
           }
         });
-        // await postRequestCreateTree(name, description, latitude, longitude, avatarId);
         setButtonLoading(false);
         notification.success('Cadastro efetuado com sucesso')
         Alert.alert('Cadastro efetuado com sucesso')

@@ -76,9 +76,7 @@ const Home: React.FC<Props> = ({navigation, route}) => {
       });
     }
     setArrayholder(newData);
-    if (newData.length > 0) {
-      console.log('newData: ', newData);
-      
+    if (newData.length > 0) {      
       setCoordinates({longitude: parseFloat(newData[0]?.longitude), latitude: parseFloat(newData[0]?.latitude)});
     } else {
       getLocation();
